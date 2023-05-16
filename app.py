@@ -1,6 +1,7 @@
 import os
 import uuid
 import glob
+import hashlib
 from flask import Flask, request, redirect, url_for, render_template, jsonify, send_from_directory
 from flask_wtf import FlaskForm
 from werkzeug.utils import secure_filename
@@ -85,9 +86,17 @@ def api_upload_certificate():
 
 @app.route('/api/get_certificates', methods=['GET'])
 def api_get_certificates():
-    files = glob.glob(os.path.join(UPLOAD_FOLDER, '*.p12'))
-    file_names = [os.path.basename(file) for file in files]
-    return jsonify(file_names), 200
+    files = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*.p12'))
+    file_objs = []
+    for file in files:
+        with open(file, 'rb') as f:
+            bytes = f.read()
+            readable_hash = hashlib.sha256(bytes).hexdigest()
+        file_objs.append({
+            'name': os.path.basename(file),
+            'remote_id': readable_hash
+        })
+    return jsonify(file_objs), 200
 
 @app.route('/healthcheck', methods=['GET'])
 def healthcheck():
