@@ -28,6 +28,11 @@ class UploadForm(FlaskForm):
         FileExtensionValidator('.p12')
     ])
 
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'p12'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     form = UploadForm()
