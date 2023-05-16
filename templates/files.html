@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded Files</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Uploaded Certificates</h1>
+    </header>
+    <div class="container">
+        <table>
+            <tr>
+                <th>Filename</th>
+            </tr>
+            {% for file in files %}
+            <tr>
+                <td>{{ file }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
