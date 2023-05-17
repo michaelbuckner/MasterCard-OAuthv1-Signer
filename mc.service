@@ -1,0 +1,15 @@
+[Unit]
+Description=Your App Gunicorn Service
+After=network.target
+
+[Service]
+User=
+Group=
+WorkingDirectory=
+ExecStart=/usr/local/bin/gunicorn --bind 0.0.0.0:80 app:app
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
